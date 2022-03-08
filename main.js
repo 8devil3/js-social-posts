@@ -88,12 +88,12 @@ function printPost(postContent, index) {
     let post = document.createElement("div");
     post.classList.add("post");
 
+
+    //stampo il post
     post.innerHTML = `
         <div class="post__header">
             <div class="post-meta">                    
-                <div class="post-meta__icon">
-                    <img class="profile-pic" src="${postContent.author.image}" alt="${postContent.author.name}">                    
-                </div>
+            ${avatar(index)}
                 <div class="post-meta__data">
                     <div class="post-meta__author">${postContent.author.name}</div>
                     <div class="post-meta__time">${newDate}</div>
@@ -123,6 +123,8 @@ function printPost(postContent, index) {
     const btnLike = document.querySelectorAll(".like-button");
     btnLike[index].addEventListener("click", addRemoveLikes);
 }
+
+
 
 
 
@@ -181,4 +183,33 @@ function addRemoveLikes(event) {
     this.classList.toggle("like-button--liked");
 
     console.table(arrLikes);
+}
+
+
+
+
+
+//gestione avatar
+function avatar(index){
+
+    //ricavo il nome dell'autore
+    let authorName = posts[index].author.name;
+
+    //estraggo le iniziali
+    let authorInit = authorName.slice(0, 1) + authorName.slice(authorName.indexOf(' ') + 1, authorName.indexOf(' ') + 2);
+
+    //compongo l'avatar
+    let authorImg;
+    
+    if (posts[index].author.image == null) {
+        return authorImg = `
+            <div class="post-meta__icon profile-pic-default">
+                <span>${authorInit}</span>
+            </div>`;
+    } else {
+        return authorImg = `
+            <div class="post-meta__icon">
+                <img class="profile-pic" src="${posts[index].author.image}" alt="${authorName}">                    
+            </div>`;     
+    }
 }
