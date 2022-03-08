@@ -110,20 +110,20 @@ function printPost(postContent, index){
     postList.appendChild(post);
 
     const btnLike = document.querySelectorAll('.like-button');
-    btnLike[index].addEventListener('click', addLikes);
-
+    btnLike[index].addEventListener('click', addRemoveLikes);
 }
+
+
+
 
 //array di conteggio like
 const arrLikes = [];
 
-function addLikes(event){
+//aggiunta e rimozione like
+function addRemoveLikes(event){
 
     //rimuovo il link comportamento "to top" della pagina
     event.preventDefault();
-
-    //switch classe del pulsante like
-    this.classList.toggle('like-button--liked');
 
     //cerco l'indice del post
     const indexPost = [...postList.children].indexOf(this.parentNode.parentNode.parentNode.parentNode);
@@ -131,12 +131,32 @@ function addLikes(event){
     //selezioni il contatore HTML
     const addLike = this.parentNode.parentNode.querySelector('#like-counter-1');
     
-    //aggiorno il contatore
-    addLike.innerText = posts[indexPost].likes + 1;
+    
+    //destrutturo le classi del pulsante
+    const likeClasses = [...this.classList];
 
-    //aggiungo il like all'array dedicato
-    arrLikes.push({id: posts[indexPost].id, like: posts[indexPost].likes + 1});
+    //cerco la classe --liked ed eventualmente incremento il contatore
+    if (!likeClasses.includes('like-button--liked')) {
+
+        //incremento il contatore
+        addLike.innerText = ++posts[indexPost].likes;
+        
+        //aggiungo il like all'array dedicato
+        arrLikes.push({id: posts[indexPost].id, like: posts[indexPost].likes});
+
+    } else {
+
+        addLike.innerText = --posts[indexPost].likes;
+        arrLikes.push({id: posts[indexPost].id, like: posts[indexPost].likes});
+    }
+    
+
+    //switch classe del pulsante like
+    this.classList.toggle('like-button--liked');
+    
+    
     
     console.table(arrLikes);
+
 
 }
