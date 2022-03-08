@@ -59,11 +59,16 @@ const posts = [
 
 const postList = document.querySelector('#container');
 
+
+
+//stampo i post
 for (let i = 0; i < posts.length; i++) {
-    printPost(posts[i]);
+    printPost(posts[i], i);
 }
 
-function printPost(postContent){
+
+//stampa post
+function printPost(postContent, index){
     let post = document.createElement('div');
     post.classList.add('post');
 
@@ -96,7 +101,37 @@ function printPost(postContent){
                 </div>
             </div> 
         </div> `;
-
+    
     postList.appendChild(post);
+
+    const btnLike = document.querySelectorAll('.like-button');
+    btnLike[index].addEventListener('click', addLikes);
+
+}
+
+//array di conteggio like
+const arrLikes = [];
+
+function addLikes(event){
+
+    //rimuovo il link comportamento "to top" della pagina
+    event.preventDefault();
+
+    //switch classe del pulsante like
+    this.classList.toggle('like-button--liked');
+
+    //cerco l'indice del post
+    const indexPost = [...this.parentNode.parentNode.parentNode.parentNode.parentNode.children].indexOf(this.parentNode.parentNode.parentNode.parentNode);
+
+    //selezioni il contatore HTML
+    const addLike = this.parentNode.parentNode.childNodes[3].childNodes[1];
+    
+    //aggiorno il contatore
+    addLike.innerText = posts[indexPost].likes + 1;
+
+    //aggiungo il like all'array dedicato
+    arrLikes.push({id: posts[indexPost].id, like: posts[indexPost].likes + 1});
+    
+    console.table(arrLikes);
 
 }
