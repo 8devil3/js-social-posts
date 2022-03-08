@@ -126,7 +126,7 @@ function addLikes(event){
     this.classList.toggle('like-button--liked');
 
     //cerco l'indice del post
-    const indexPost = [...this.parentNode.parentNode.parentNode.parentNode.parentNode.children].indexOf(this.parentNode.parentNode.parentNode.parentNode);
+    const indexPost = [...postList.children].indexOf(this.parentNode.parentNode.parentNode.parentNode);
 
     //selezioni il contatore HTML
     const addLike = this.parentNode.parentNode.querySelector('#like-counter-1');
