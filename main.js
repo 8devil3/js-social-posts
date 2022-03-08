@@ -62,7 +62,7 @@ const posts = [
 ];
 
 const postList = document.querySelector("#container");
-
+const arrLikes = [];
 
 
 
@@ -76,20 +76,15 @@ for (let i = 0; i < posts.length; i++) {
 
 //stampa post
 function printPost(postContent, index) {
+
+    //correggo la data
     let oldDate = postContent.created;
+    let newDate = oldDate.slice(5, 7) + "/" + oldDate.slice(-2) + "/" + oldDate.slice(0, 4);
 
-    let newDate =
-        oldDate.slice(5, 7) +
-        "/" +
-        oldDate.slice(-2) +
-        "/" +
-        oldDate.slice(0, 4);
-
+    
+    //stampo il post
     let post = document.createElement("div");
     post.classList.add("post");
-
-
-    //stampo il post
     post.innerHTML = `
         <div class="post__header">
             <div class="post-meta">                    
@@ -119,7 +114,6 @@ function printPost(postContent, index) {
         </div> `;
 
     postList.appendChild(post);
-
     const btnLike = document.querySelectorAll(".like-button");
     btnLike[index].addEventListener("click", addRemoveLikes);
 }
@@ -128,12 +122,10 @@ function printPost(postContent, index) {
 
 
 
-//array di conteggio like
-const arrLikes = [];
-
 //aggiunta e rimozione like
 function addRemoveLikes(event) {
-    //rimuovo il link comportamento "to top" della pagina
+
+    //rimuovo il comportamento "to top" della pagina quando si clicca un link vuoto
     event.preventDefault();
 
     //cerco l'indice del post
@@ -149,17 +141,21 @@ function addRemoveLikes(event) {
 
     //cerco la classe --liked ed eventualmente incremento il contatore
     if (!likeClasses.includes("like-button--liked")) {
+
         //incremento il contatore HTML
         addLike.innerText = ++posts[indexPost].likes;
 
-        //controllo che l'array dei like si vuoto e in tal caso inserisco l'oggetto {id, like}
+        //controllo che l'array dei like sia vuoto e in tal caso inserisco l'oggetto {id, like}
         if (arrLikes.length == 0) {
+
             //aggiungo il like all'array dedicato
             arrLikes.push({
                 id: posts[indexPost].id,
                 like: posts[indexPost].likes,
             });
-        } else { //se l'array ha già dei valori allora li sovrascrivo
+        } else {
+            
+            //se l'array ha già dei valori allora li sovrascrivo
             for (let i = 0; i < arrLikes.length; i++) {
                 if (arrLikes[i].id == posts[indexPost].id) {
                     arrLikes[i].like = posts[indexPost].likes;
@@ -167,6 +163,7 @@ function addRemoveLikes(event) {
             }
         }
     } else { 
+
         //decremento il contatore HTML
         addLike.innerText = --posts[indexPost].likes;
 
@@ -176,7 +173,6 @@ function addRemoveLikes(event) {
                 arrLikes[x].like = posts[indexPost].likes;
             }
         }
-        // arrLikes.like = posts[indexPost].likes;
     }
 
     //switch classe del pulsante like
@@ -200,7 +196,6 @@ function avatar(index){
 
     //compongo l'avatar
     let authorImg;
-    
     if (posts[index].author.image == null) {
         return authorImg = `
             <div class="post-meta__icon profile-pic-default">
