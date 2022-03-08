@@ -69,6 +69,11 @@ for (let i = 0; i < posts.length; i++) {
 
 //stampa post
 function printPost(postContent, index){
+
+    let oldDate = postContent.created;
+
+    let newDate = oldDate.slice(-2) + '/' + oldDate.slice(5,7) + '/' + oldDate.slice(0,4);
+
     let post = document.createElement('div');
     post.classList.add('post');
 
@@ -80,7 +85,7 @@ function printPost(postContent, index){
                 </div>
                 <div class="post-meta__data">
                     <div class="post-meta__author">${postContent.author.name}</div>
-                    <div class="post-meta__time">${postContent.created}</div>
+                    <div class="post-meta__time">${newDate}</div>
                 </div>                    
             </div>
         </div>
@@ -124,7 +129,7 @@ function addLikes(event){
     const indexPost = [...this.parentNode.parentNode.parentNode.parentNode.parentNode.children].indexOf(this.parentNode.parentNode.parentNode.parentNode);
 
     //selezioni il contatore HTML
-    const addLike = this.parentNode.parentNode.childNodes[3].childNodes[1];
+    const addLike = this.parentNode.parentNode.querySelector('#like-counter-1');
     
     //aggiorno il contatore
     addLike.innerText = posts[indexPost].likes + 1;
